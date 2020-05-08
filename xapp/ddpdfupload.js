@@ -24,7 +24,6 @@ xApp.ddpdfupload = function(selector, config) {
         handleDrop = function(e) {
             const dt = e.dataTransfer,
                 files = dt.files
-
             handleFiles(files)
         },
         handleFiles = function(files) {
@@ -35,7 +34,6 @@ xApp.ddpdfupload = function(selector, config) {
         uploadFile = function(file, i) {
             const formData = new FormData(),
                 url = URL.createObjectURL(file)
-
             makeThumb(url).then($canvas => {
                 while ($thumb.hasChildNodes()) {
                     $thumb.removeChild($thumb.lastChild)
@@ -45,7 +43,6 @@ xApp.ddpdfupload = function(selector, config) {
                     data = { path: settings.uploadPath }
                 $img.src = imgUrl
                 $thumb.appendChild($img)
-                data['thumbnail'] = imgUrl
                 formData.append('data', new Blob([JSON.stringify(data)], { type: 'application/json' }))
                 formData.append('pdf', file)
 
