@@ -5,7 +5,7 @@ xApp.tinymce = function(selector, config) {
             uploadImageEndPoint: '/api/v0/resource/upload/media-image',
             uploadImagePath: '/uploads',
             uploadImageResize: false,
-            imageBasePath: xApp.basePath + '/resources/media'
+            mediaBasePath: xApp.basePath + '/resources/media'
         },
         $element = document.querySelector(selector),
         settings = Object.assign(defaults, config),
@@ -24,7 +24,7 @@ xApp.tinymce = function(selector, config) {
                             return;
                         }
 
-                        const imgsrc = settings.imageBasePath + response.data.path + '/' + response.data.name
+                        const imgsrc = settings.mediaBasePath + response.data.path + '/' + response.data.name
                         success(imgsrc)
                     }
                 })
@@ -35,14 +35,16 @@ xApp.tinymce = function(selector, config) {
         libdef = {
             target: $element,
             menubar: false,
-            plugins: [
-                'advlist autolink lists link image charmap print preview anchor',
-                'searchreplace visualblocks code fullscreen',
-                'insertdatetime media table paste code help wordcount'
-            ],
+            plugins:
+                'advlist autolink lists link image charmap print preview anchor ' +
+                'searchreplace visualblocks code fullscreen ' +
+                'insertdatetime media table paste help wordcount'
+                ,
             toolbar: 'undo redo | formatselect | ' +
-                'bold italic backcolor | alignleft aligncenter ' +
-                'alignright alignjustify | bullist numlist outdent indent | image-browser | ' +
+                'bold italic underline strikethrough | alignleft aligncenter ' +
+                'alignright alignjustify | '+
+                'bullist numlist outdent indent | link image-browser media insert-pdf | ' +
+                'fullscreen preview code | ' +
                 'removeformat | help',
             images_upload_handler: imageUploadHandler,
             relative_urls: false,
@@ -53,14 +55,14 @@ xApp.tinymce = function(selector, config) {
                         onAction: function() {
                             editor.windowManager.openUrl({
                                 title: 'Image Browser',
-                                url: xApp.basePath + '/modules/tinymce/media-browser-dlg',
+                                url: xApp.basePath + '/modules/tinymce/media-browser-dlg?filter=image',
                                 height: 600,
                                 width: 1000,
                                 onMessage: function(instance, data) {
                                     switch (data.mceAction) {
                                         case 'filePicked':
                                             if (data.fileType=='IMAGE') {
-                                                editor.execCommand('mceInsertContent', false, '<img src="' + settings.imageBasePath + data.fileSrc + '">')
+                                                editor.execCommand('mceInsertContent', false, '<img src="' + settings.mediaBasePath + data.fileSrc + '">')
                                             }
                                             instance.close()
                                     }
@@ -68,8 +70,29 @@ xApp.tinymce = function(selector, config) {
                             });
                         }
                     })
-                }
-                //content_css: xApp.basePath + '/themes/family-doctor/css/style.css'
+                    editor.ui.registry.addButton('insert-pdf', {
+                        icon: 'new-document',
+                        tooltip: 'Sisipkan PDF',
+                        onAction: function() {
+                            editor.windowManager.openUrl({
+                                title: 'Image Browser',
+                                url: xApp.basePath + '/modules/tinymce/media-browser-dlg?filter=pdf',
+                                height: 600,
+                                width: 1000,
+                                onMessage: function(instance, data) {
+                                    switch (data.mceAction) {
+                                        case 'filePicked':
+                                            if (data.fileType=='PDF') {
+                                                editor.execCommand('mceInsertContent', false, '<iframe class="xapp-pdf-media" src="'+xApp.basePath+'/node_modules/slimlibs-js/libs/pdf.js/web/viewer.html?file='+ encodeURIComponent(settings.mediaBasePath + data.fileSrc) +'"></iframe>')
+                                            }
+                                            instance.close()
+                                    }
+                                }
+                            });
+                        }
+                    })
+                },
+                content_css: xApp.basePath + '/css/tinymce-content.css'
         },
         libsettings = Object.assign(libdef, settings.libSettings)
 
