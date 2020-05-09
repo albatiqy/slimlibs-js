@@ -45,7 +45,7 @@ xApp.tinymce = function(selector, config) {
                 'alignright alignjustify | bullist numlist outdent indent | image-browser | ' +
                 'removeformat | help',
             images_upload_handler: imageUploadHandler,
-            images_upload_base_path: '/',
+            relative_urls: false,
             setup: function(editor) {
                     editor.ui.registry.addButton('image-browser', {
                         icon: 'gallery',
