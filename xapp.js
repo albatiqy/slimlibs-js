@@ -1,62 +1,9 @@
-import globals from "../../js/modules/globals.js"
+import {globals, SlimlibsHandleHttpJSONResponse} from "../../js/modules/globals.js?module"
 const xApp = Object.assign(globals, {
     appSelector: '#app'
 })
 
-class ResultException extends Error {
-    constructor(response, status) {
-        super(response.message)
-        this.name = this.constructor.name
-        if ('captureStackTrace' in Error) {
-            Error.captureStackTrace(this, this.constructor)
-        } else {
-            this.stack = (new Error(this.message)).stack
-        }
-        this.data = response.error
-        this.errType = response.errType
-        this.httpStatus = status
-    }
-}
-
-class JSONError extends Error {
-    constructor(json, status) {
-        if ('message' in json) {
-            super(json.message)
-        } else {
-            super("server error")
-        }
-        this.name = this.constructor.name
-        if ('captureStackTrace' in Error) {
-            Error.captureStackTrace(this, this.constructor)
-        } else {
-            this.stack = (new Error(this.message)).stack
-        }
-        this.data = json
-        this.httpStatus = status
-    }
-}
-
-xApp.handleHttpJSONResponse = async function(response) { // text status???
-    if (['application/json', 'text/json'].includes(response.headers.get('Content-Type'))) {
-        let json = null
-        try {
-            json = await response.json()
-        } catch (e) {
-            throw new JSONError({message:"malformed json response"}, response.status)
-        }
-        if (!response.ok) {
-            if ('errType' in json) {
-                throw new ResultException(json, response.status)
-            } else {
-                throw new JSONError(json, response.status)
-            }
-        } else {
-            return json
-        }
-    } else {
-        throw new JSONError({message:"invalid content type"}, response.status)
-    }
-}
+xApp.handleHttpJSONResponse = SlimlibsHandleHttpJSONResponse
 
 xApp.notifyError = function(error) {
     const event = new CustomEvent('notification.error', {

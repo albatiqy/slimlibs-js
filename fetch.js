@@ -12,7 +12,7 @@ xApp.login = function(email, password) {
         setTimeout(function() {
             reject(new ConnectionTimedout())
           }, 5000)
-        fetch(xApp.basePath + "/api/v0/login", {
+        fetch(xApp.basePath + "/api/v0/users/login", {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -29,29 +29,6 @@ xApp.login = function(email, password) {
         return json
     })
 }
-
-/*
-xApp.login = function(email, password) {
-    localStorage.setItem("access_token", null)
-    return fetch(xApp.basePath + "/api/v0/login", {
-        method: 'POST',
-        headers: {
-            'Accept': 'application/json',
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ email, password })
-    })
-    .then(xApp.handleHttpJSONResponse)
-    .then((json)=>{
-        localStorage.setItem("access_token", json.data.access_token)
-        localStorage.setItem("refresh_token", json.data.refresh_token)
-        localStorage.setItem("token_expires", json.data.expires)
-        return json
-    })
-}
-*/
-
-//xmlhttp post
 
 xApp.apiGet = async function(url) {
     return xApp.apiCall(url, {})
