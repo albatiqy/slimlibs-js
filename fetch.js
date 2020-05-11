@@ -79,7 +79,7 @@ xApp.apiDelete = async function(url, data) {
 }
 
 xApp.refreshToken = async function(callback) {
-    const ntoken = await fetch(xApp.basePath + "/api/v0/token", {headers:{"Content-Type": "application/json", "Accept": "application/json"}, method:'POST', body:JSON.stringify({refresh_token: localStorage.getItem('refresh_token')})})
+    const ntoken = await fetch(xApp.basePath + "/api/v0/users/token", {headers:{"Content-Type": "application/json", "Accept": "application/json"}, method:'POST', body:JSON.stringify({refresh_token: localStorage.getItem('refresh_token')})})
         .then(xApp.handleHttpJSONResponse)
     localStorage.setItem("access_token", ntoken.data.access_token)
     localStorage.setItem("refresh_token", ntoken.data.refresh_token)

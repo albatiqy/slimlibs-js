@@ -75,7 +75,7 @@ xApp.tinymce = function(selector, config) {
                         tooltip: 'Sisipkan PDF',
                         onAction: function() {
                             editor.windowManager.openUrl({
-                                title: 'Image Browser',
+                                title: 'PDF Browser',
                                 url: xApp.basePath + '/modules/tinymce/media-browser-dlg?filter=pdf',
                                 height: 600,
                                 width: 1000,
@@ -97,5 +97,8 @@ xApp.tinymce = function(selector, config) {
         libsettings = Object.assign(libdef, settings.libSettings)
 
     tinymce.init(libsettings)
+    xApp.onUnload(()=>{
+        tinymce.remove()
+    })
     return tinymce.get($element.id)
 }
