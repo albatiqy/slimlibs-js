@@ -115,11 +115,11 @@ xApp.apiCall = async function(url, config) {
                             return fetch(endPoint, settings).then(xApp.handleHttpJSONResponse)
                         })
                     } catch (e) {
-                        if ('pageReff' in xApp) {
+                        if (!('pageReff' in xApp)) {
                             xApp.pageReff = location.hash
-                            location = '#!/login'
-                            return
                         }
+                        location = '#!/login'
+                        return
                     }
                 }
             case 'JSONError':
