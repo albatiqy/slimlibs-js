@@ -48,20 +48,20 @@ xApp.tabulator = function(selector, config) {
                     }
                 }
                 params['sorters'].forEach((v, k) => {
-                        q['orders[' + k + '][dir]'] = v.dir
-                        q['orders[' + k + '][column]'] = v.field
-                    })
-                    /*
-                    let z = 0
-                    data.columns.forEach((v, k) => {
-                        if (v.searchable && v.search.value != "") {
-                            params['filters[' + z + '][column]'] = v.data
-                            params['filters[' + z + '][type]'] = 'like'
-                            params['filters[' + z + '][value]'] = encodeURI(v.search.value)
-                        }
-                        z++
-                    })
-                    */
+                    q['orders[' + k + '][dir]'] = v.dir
+                    q['orders[' + k + '][column]'] = v.field
+                })
+                /*
+                let z = 0
+                data.columns.forEach((v, k) => {
+                    if (v.searchable && v.search.value != "") {
+                        params['filters[' + z + '][column]'] = v.data
+                        params['filters[' + z + '][type]'] = 'like'
+                        params['filters[' + z + '][value]'] = encodeURI(v.search.value)
+                    }
+                    z++
+                })
+                */
                 const p = new URLSearchParams(q).toString()
                 return xApp.apiGet(url + (p != '' ? '?' + decodeURI(p) : '')).then(json => {
                     return {
