@@ -48,7 +48,7 @@ xApp.tinymce = function(selector, config) {
                 xApp.apiGet('/api/v0/module/media/embedcode?url=' + decodeURI(data.url))
                     .then(json => {
                         if (json.data.result) {
-                            resolve({ html: json.data.code })
+                            resolve({html: '<div class="'+json.data.class+'-wrapper'+'">' + json.data.code + '</div>'})
                         } else {
                             reject({msg: 'invalid resource'})
                         }
@@ -91,7 +91,7 @@ xApp.tinymce = function(selector, config) {
                                 switch (data.mceAction) {
                                     case 'filePicked':
                                         if (data.fileType == 'PDF') {
-                                            editor.execCommand('mceInsertContent', false, '<iframe class="xapp-pdf-media" src="' + xApp.basePath + '/node_modules/slimlibs-js/libs/pdf.js/web/viewer.html?file=' + encodeURIComponent(settings.mediaBasePath + data.fileSrc) + '"></iframe>')
+                                            editor.execCommand('mceInsertContent', false, '<div class="xapp-pdf-media-wrapper"><iframe class="xapp-pdf-media" src="' + xApp.basePath + '/node_modules/slimlibs-js/libs/pdf.js/web/viewer.html?file=' + encodeURIComponent(settings.mediaBasePath + data.fileSrc) + '"></iframe></div>')
                                         }
                                         instance.close()
                                 }
