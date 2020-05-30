@@ -26,6 +26,7 @@ xApp.login = function(email, password) {
         localStorage.setItem("access_token", json.data.access_token)
         localStorage.setItem("refresh_token", json.data.refresh_token)
         localStorage.setItem("token_expires", json.data.expires)
+        document.cookie = 'access_token=' + json.data.access_token + '; expires=' + (new Date(json.data.expires * 1000).toUTCString())
         return json
     })
 }
