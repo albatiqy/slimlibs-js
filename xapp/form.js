@@ -49,11 +49,11 @@ xApp.form = function(settings) {
         }
         cb(endpoint, data)
         .then(json=>{
-            settings.afterSubmit()
+            settings.afterSubmit(true)
             settings.submitSuccess(json)
         })
         .catch(error=>{
-            settings.afterSubmit()
+            settings.afterSubmit(false)
             settings.submitError(error)
         })
 
