@@ -74,14 +74,7 @@ xApp.tabulator = function(selector, config) {
             paginationSize: 20,
             placeholder: "No Data Set",
             ajaxError: function(resp) {},
-            selectable: false,
-            rowSelectionChanged: function(data, rows) {
-                if (data.length > 0) {
-                    setOnSelect(true)
-                } else {
-                    setOnSelect(false)
-                }
-            }
+            selectable: false
         },
         tbsettings = Object.assign(tbdef, settings.libSettings),
         table = new Tabulator($tb, tbsettings),
@@ -105,11 +98,16 @@ xApp.tabulator = function(selector, config) {
                 }
             })
         }
+    table.options['rowSelectionChanged'] = function(data, rows) {
+        setOnSelect(data.length > 0)
+    }
     setOnSelect(false)
-    $editBtn.addEventListener('click', function(e) {
-        e.preventDefault()
-        location = '#!' + settings.inputPath + table.getSelectedRows()[0].getData()[tbsettings.index]
-    })
+    if ($editBtn!=null) {
+        $editBtn.addEventListener('click', function(e) {
+            e.preventDefault()
+            location = '#!' + settings.inputPath + table.getSelectedRows()[0].getData()[tbsettings.index]
+        })
+    }
     $deleteBtn.addEventListener('click', function(e) {
         e.preventDefault()
         const id = table.getSelectedRows()[0].getData()[tbsettings.index]
@@ -122,9 +120,11 @@ xApp.tabulator = function(selector, config) {
             })
         }
     })
-    $fSearch.addEventListener('submit', function(e){
-        e.preventDefault()
-        table.replaceData()
-    })
+    if ($search!=null) {
+        $fSearch.addEventListener('submit', function(e){
+            e.preventDefault()
+            table.replaceData()
+        })
+    }
     return table
 }
