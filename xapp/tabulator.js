@@ -108,18 +108,20 @@ xApp.tabulator = function(selector, config) {
             location = '#!' + settings.inputPath + table.getSelectedRows()[0].getData()[tbsettings.index]
         })
     }
-    $deleteBtn.addEventListener('click', function(e) {
-        e.preventDefault()
-        const id = table.getSelectedRows()[0].getData()[tbsettings.index]
-        if (settings.deleteConfirm(id)) {
-            xApp.apiDelete(settings.endPoint + '/' + id) //post and put
-            .then(json => {
-                table.replaceData()
-            }).catch(error => {
-                settings.deleteError(error)
-            })
-        }
-    })
+    if ($deleteBtn!=null) {
+        $deleteBtn.addEventListener('click', function(e) {
+            e.preventDefault()
+            const id = table.getSelectedRows()[0].getData()[tbsettings.index]
+            if (settings.deleteConfirm(id)) {
+                xApp.apiDelete(settings.endPoint + '/' + id) //post and put
+                .then(json => {
+                    table.replaceData()
+                }).catch(error => {
+                    settings.deleteError(error)
+                })
+            }
+        })
+    }
     if ($search!=null) {
         $fSearch.addEventListener('submit', function(e){
             e.preventDefault()

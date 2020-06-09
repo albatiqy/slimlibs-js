@@ -74,9 +74,22 @@ xApp.apiPut = async function(url, data) {
 }
 
 xApp.apiDelete = async function(url, data) {
-    return xApp.apiCall(url, {
+    let settings = {
         method: 'DELETE'
-    })
+    }
+    if (data.constructor.name=='FormData') {
+        settings = Object.assign(settings, {
+            body: data
+        })
+    } else {
+        settings = Object.assign(settings, {
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(data)
+        })
+    }
+    return xApp.apiCall(url, settings)
 }
 
 xApp.refreshToken = async function(callback) {
