@@ -108,6 +108,7 @@ xApp.tabulator = function(selector, config) {
             location = '#!' + settings.inputPath + table.getSelectedRows()[0].getData()[tbsettings.index]
         })
     }
+    
     if ($deleteBtn!=null) {
         $deleteBtn.addEventListener('click', function(e) {
             e.preventDefault()
