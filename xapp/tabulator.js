@@ -108,13 +108,12 @@ xApp.tabulator = function(selector, config) {
             location = '#!' + settings.inputPath + table.getSelectedRows()[0].getData()[tbsettings.index]
         })
     }
-    
     if ($deleteBtn!=null) {
         $deleteBtn.addEventListener('click', function(e) {
             e.preventDefault()
             const id = table.getSelectedRows()[0].getData()[tbsettings.index]
             if (settings.deleteConfirm(id)) {
-                xApp.apiDelete(settings.endPoint + '/' + id) //post and put
+                xApp.apiDelete(settings.endPoint + '/' + id, {}) //post and put
                 .then(json => {
                     table.replaceData()
                 }).catch(error => {
