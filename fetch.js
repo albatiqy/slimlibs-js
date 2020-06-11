@@ -99,6 +99,7 @@ xApp.refreshToken = async function(callback) {
         localStorage.setItem("access_token", ntoken.data.access_token)
         localStorage.setItem("refresh_token", ntoken.data.refresh_token)
         localStorage.setItem("token_expires", ntoken.data.expires)
+        document.cookie = 'access_token=' + ntoken.data.access_token + '; expires=' + (new Date(ntoken.data.expires * 1000).toUTCString())
         return callback()
     } catch (e) {
         throw e
