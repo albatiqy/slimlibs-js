@@ -6,7 +6,18 @@ class ConnectionTimedout extends Error {
     }
 }
 
+xApp.cookieEnabled = function() {
+    if (navigator.cookieEnabled) return true
+    document.cookie = "cookietest=1"
+    const ret = document.cookie.indexOf("cookietest=") != -1
+    document.cookie = "cookietest=1; expires=Thu, 01-Jan-1970 00:00:01 GMT"
+    return ret
+}
+
 xApp.login = function(email, password) {
+    if (!xApp.cookieEnabled()) {
+        alert('Cookie pada browser Anda tidak diaktifkan!\nBeberapa fitur mungkin tidak berjalan dengan semestinya')
+    }
     localStorage.setItem("access_token", null)
     return new Promise((resolve, reject)=>{
         setTimeout(function() {
