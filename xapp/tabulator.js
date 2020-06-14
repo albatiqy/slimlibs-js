@@ -85,8 +85,10 @@ xApp.tabulator = function(selector, config) {
                     case 'BUTTON':
                         if (b) {
                             $v.removeAttribute('disabled')
+                            $v.classList.remove('disabled')
                         } else {
                             $v.setAttribute('disabled', '')
+                            $v.classList.add('disabled')
                         }
                         break
                     case 'A':

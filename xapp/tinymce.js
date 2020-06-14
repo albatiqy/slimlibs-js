@@ -57,6 +57,9 @@ xApp.tinymce = function(selector, config) {
             images_upload_handler: imageUploadHandler,
             relative_urls: false,
             setup: function(editor) {
+                editor.on('init', function(args) {
+                    xApp.unblock()
+                })
                 editor.ui.registry.addButton('image-browser', {
                     icon: 'gallery',
                     tooltip: 'Image Browser',
@@ -103,6 +106,7 @@ xApp.tinymce = function(selector, config) {
             content_css: [xApp.basePath + '/node_modules/bootstrap3/dist/css/bootstrap.min.css', xApp.basePath + '/css/tinymce-content.css']
         },
         libsettings = Object.assign(libdef, settings.libSettings)
+    xApp.block()
 
     tinymce.init(libsettings)
     xApp.onUnload(() => {

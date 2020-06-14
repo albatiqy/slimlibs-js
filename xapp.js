@@ -1,6 +1,7 @@
 import {globals, SlimlibsHandleHttpJSONResponse} from "../../js/modules/globals.js?module"
 const xApp = Object.assign(globals, {
-    appSelector: '#app'
+    appSelector: '#app',
+    Libs: {}
 })
 
 xApp.handleHttpJSONResponse = SlimlibsHandleHttpJSONResponse
