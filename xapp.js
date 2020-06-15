@@ -1,6 +1,7 @@
 import {globals, SlimlibsHandleHttpJSONResponse} from "../../js/modules/globals.js?module"
 const xApp = Object.assign(globals, {
     appSelector: '#app',
+    pageSelector: '#container',
     Libs: {}
 })
 
@@ -8,6 +9,16 @@ xApp.handleHttpJSONResponse = SlimlibsHandleHttpJSONResponse
 
 xApp.notifyError = function(error) {
     const event = new CustomEvent('notification.error', {
+        bubbles: true,
+        detail: error
+    }), $app = document.querySelector(xApp.appSelector)
+    if ($app!=null) {
+        $app.dispatchEvent(event)
+    }
+}
+
+xApp.notifyApiError = function(error) {
+    const event = new CustomEvent('notification.api-error', {
         bubbles: true,
         detail: error
     }), $app = document.querySelector(xApp.appSelector)

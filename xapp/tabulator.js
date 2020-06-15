@@ -18,9 +18,9 @@ xApp.tabulator = function(selector, config) {
             },
         },
         $container = document.querySelector(selector),
-        $editBtn = $container.querySelector('.xapp-tbedit'),
-        $deleteBtn = $container.querySelector('.xapp-tbdelete'),
-        $fSearch = $container.querySelector('.xapp-tbsearch'),
+        $editBtn = $container.querySelector('[data-tb="btnEdit"]'),
+        $deleteBtn = $container.querySelector('[data-tb="btnDelete"]'),
+        $fSearch = $container.querySelector('[data-tb="frmSearch"]'),
         $search = ($fSearch!=null?$fSearch.querySelector('input[type="text"]'):null),
         $tb = $container.querySelector('.tb'),
         settings = Object.assign(defaults, config),
@@ -79,7 +79,7 @@ xApp.tabulator = function(selector, config) {
         tbsettings = Object.assign(tbdef, settings.libSettings),
         table = new Tabulator($tb, tbsettings),
         setOnSelect = function (b) {
-            $container.querySelectorAll('.xapp-onselect').forEach($v=>{
+            $container.querySelectorAll('[data-tb-onselect="1"]').forEach($v=>{
                 switch ($v.nodeName) {
                     case 'INPUT':
                     case 'BUTTON':
