@@ -17,16 +17,6 @@ xApp.notifyError = function(error) {
     }
 }
 
-xApp.notifyApiError = function(error) {
-    const event = new CustomEvent('notification.api-error', {
-        bubbles: true,
-        detail: error
-    }), $app = document.querySelector(xApp.appSelector)
-    if ($app!=null) {
-        $app.dispatchEvent(event)
-    }
-}
-
 xApp.routerBasePath = (location.pathname.slice(-1)=="/"?"":location.pathname).substr(xApp.basePath.length)
 
 export { xApp }

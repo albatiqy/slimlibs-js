@@ -37,7 +37,7 @@ xApp.tabulator = function(selector, config) {
             },
             ajaxFiltering: true,
             ajaxSorting: true,
-            ajaxRequestFunc: function(url, config, params) {
+            ajaxRequestFunc: async function(url, config, params) {
                 const q = {
                         length: params.size,
                         page: params.page
@@ -63,12 +63,16 @@ xApp.tabulator = function(selector, config) {
                 })
                 */
                 const p = new URLSearchParams(q).toString()
-                return xApp.apiGet(url + (p != '' ? '?' + decodeURI(p) : '')).then(json => {
+                let json = null;
+                try {
+                    json = await xApp.apiGet(url + (p != '' ? '?' + decodeURI(p) : ''))
                     return {
                         last_page: Math.ceil(json.recordsTotal / params.size), //json.pageCount
                         data: json.data
                     }
-                })
+                } catch (e) {
+                    xApp.notifyError(e)
+                }
             },
             pagination: "remote",
             paginationSize: 20,
