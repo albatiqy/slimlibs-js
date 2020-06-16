@@ -67,7 +67,7 @@ xApp.tabulator = function(selector, config) {
                 try {
                     json = await xApp.apiGet(url + (p != '' ? '?' + decodeURI(p) : ''))
                     return {
-                        last_page: Math.ceil(json.recordsTotal / params.size), //json.pageCount
+                        last_page: Math.ceil(json.recordsFiltered / params.size), //json.pageCount
                         data: json.data
                     }
                 } catch (e) {
