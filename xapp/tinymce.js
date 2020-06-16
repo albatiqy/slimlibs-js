@@ -103,6 +103,7 @@ xApp.tinymce = function(selector, config) {
                     }
                 })
             },
+            extended_valid_elements : 'span[class]',
             content_css: [xApp.basePath + '/node_modules/bootstrap3/dist/css/bootstrap.min.css', xApp.basePath + '/css/tinymce-content.css']
         },
         libsettings = Object.assign(libdef, settings.libSettings)
