@@ -2,7 +2,7 @@ import {SlimlibsGlobals, SlimlibsHandleHttpJSONResponse} from "../../js/modules/
 const xApp = Object.assign(SlimlibsGlobals, {
     appSelector: '#app',
     pageSelector: '#container',
-    cookiePath: (this.basePath==''?'/':this.basePath),
+    cookiePath: (SlimlibsGlobals.basePath==''?'/':SlimlibsGlobals.basePath),
     Libs: {}
 })
 
