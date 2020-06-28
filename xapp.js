@@ -3,7 +3,8 @@ const xApp = Object.assign(SlimlibsGlobals, {
     appSelector: '#app',
     pageSelector: '#container',
     cookiePath: (SlimlibsGlobals.basePath==''?'/':SlimlibsGlobals.basePath),
-    Libs: {}
+    Libs: {},
+    Fn: {}
 })
 
 xApp.handleHttpJSONResponse = SlimlibsHandleHttpJSONResponse
