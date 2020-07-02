@@ -4,6 +4,7 @@ import "../fetch.js"
 xApp.tabulator = function(selector, config) {
     const defaults = {
             inputPath: xApp.path + '/input/',
+            deleteEndPoint: this.endPoint,
             deleteError: function(e) {
                 if (e.constructor.name == 'ResultException') {
                     switch (e.errType) {
@@ -119,7 +120,7 @@ xApp.tabulator = function(selector, config) {
             e.preventDefault()
             const id = table.getSelectedRows()[0].getData()[tbsettings.index]
             if (settings.deleteConfirm(id)) {
-                xApp.apiDelete(settings.endPoint + '/' + id, {}) //post and put
+                xApp.apiDelete(settings.deleteEndPoint + '/' + id, {}) //post and put
                 .then(json => {
                     table.replaceData()
                 }).catch(error => {
