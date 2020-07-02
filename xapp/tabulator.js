@@ -4,19 +4,23 @@ import "../fetch.js"
 xApp.tabulator = function(selector, config) {
     const defaults = {
             inputPath: xApp.path + '/input/',
-            deleteEndPoint: this.endPoint,
-            deleteError: function(e) {
-                if (e.constructor.name == 'ResultException') {
-                    switch (e.errType) {
-                        case xApp.errTypes.NOT_EXIST:
-                            alert("data yang akan dihapus tidak ditemukan", "Error")
-                            break
-                    }
+            deleteEndPoint: config.endPoint,
+            deleteRow: function (id) {
+                if (confirm("Yakin akan dihapus?")) {
+                    xApp.apiDelete(settings.deleteEndPoint + '/' + id, {}) //post and put
+                    .then(json => {
+                        table.replaceData()
+                    }).catch(error => {
+                        if (error.constructor.name == 'ResultException') {
+                            switch (error.errType) {
+                                case xApp.errTypes.NOT_EXIST:
+                                    alert("data yang akan dihapus tidak ditemukan", "Error")
+                                    break
+                            }
+                        }
+                    })
                 }
-            },
-            deleteConfirm: function(id) {
-                return confirm("Yakin akan dihapus?")
-            },
+            }
         },
         $container = document.querySelector(selector),
         $editBtn = $container.querySelector('[data-tb="btnEdit"]'),
@@ -119,14 +123,7 @@ xApp.tabulator = function(selector, config) {
         $deleteBtn.addEventListener('click', function(e) {
             e.preventDefault()
             const id = table.getSelectedRows()[0].getData()[tbsettings.index]
-            if (settings.deleteConfirm(id)) {
-                xApp.apiDelete(settings.deleteEndPoint + '/' + id, {}) //post and put
-                .then(json => {
-                    table.replaceData()
-                }).catch(error => {
-                    settings.deleteError(error)
-                })
-            }
+            settings.deleteRow(id)
         })
     }
     if ($search!=null) {
