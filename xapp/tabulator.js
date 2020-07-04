@@ -109,6 +109,9 @@ xApp.tabulator = function(selector, config) {
                 }
             })
         }
+
+    $container.__proto__.deleteRow = settings.deleteRow
+
     table.options['rowSelectionChanged'] = function(data, rows) {
         setOnSelect(data.length > 0)
     }
