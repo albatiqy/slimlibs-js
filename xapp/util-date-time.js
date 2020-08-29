@@ -4,7 +4,7 @@ const INPUT_FORMAT = 'YYYY-MM-DD HH:mm:ss',
     $bulan = ["","Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","November","Desember"],
     $hari = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jum'at", "Sabtu"];
 
-xApp.rangeDateFormat = function($date1, $date2, $separator = null, $input_format = null) {
+xApp.dateRangeFormat = function($date1, $date2, $separator = null, $input_format = null) {
     if ($separator == null) {
         $separator = ' s.d. ';
     }
@@ -39,7 +39,7 @@ xApp.rangeDateFormat = function($date1, $date2, $separator = null, $input_format
     return $rentang_tanggal;
 }
 
-xApp.rangeTimeFormat = function($date1, $date2, $input_format = null) {
+xApp.timeRangeFormat = function($date1, $date2, $input_format = null) {
     if ($input_format == null) {
         $input_format = INPUT_FORMAT;
     }
