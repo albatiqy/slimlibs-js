@@ -41,7 +41,40 @@ xApp.handsontable = function(selector, config) {
                 }
                 xApp.apiPost(settings.updateEndPoint, dta)
                 .then(json => {
-                    //console.log(json)
+                    if (json.data.results.length > 0) {
+                        let err = '<ul>'
+                        const invalidCells = []
+                        json.data.results.forEach((v,k)=>{
+                            const index_ref=parseInt(v.index_ref, 10)
+                            for (const x in v.errors) {
+                                v.errors[x].forEach((v1,k1)=>{
+                                    err += '<li>baris ke ' + (index_ref + 1) + ': ' + v1 + '</li>'
+                                })
+                            }
+                            if (Object.keys(v.errors).length > 0) {
+                                const cp = hot.getCellMetaAtRow(index_ref)
+                                cp.forEach((v1)=>{
+                                    v1.valid = false
+                                    invalidCells.push(v1)
+                                })
+                            }
+                            var hupd = hot.getSourceDataAtRow(index_ref)
+                            for (const y in v.updates) {
+                                if (isNaN(hot.propToCol(y))) {
+                                    hupd[y] = v.updates[y]
+                                } else {
+                                    hot.setDataAtRowProp(index_ref, y, v.updates[y], 'update1')
+                                }
+                            }
+                        })
+                        err += '</ul>'
+                        hot.render()
+                        /*
+                        invalidCells.forEach(v1=>{
+                            v1.valid = true
+                        })
+                        */
+                    }
                 }).catch(error => {
                 })
             }
@@ -49,6 +82,9 @@ xApp.handsontable = function(selector, config) {
         libsettings = Object.assign(libdef, settings.libSettings),
         layout =
 `<div class="row justify-content-end">
+    <div class="col">
+    <label class="badge badge-danger d-none" data-xapp="ht-errors">error</label>
+    </div>
     <div class="col-xs-8 col-sm-6 col-md-4 text-right">
         <form data-xapp="ht-search">
         <input type="search" class="form-control input-sm" placeholder="Cari">
@@ -56,15 +92,10 @@ xApp.handsontable = function(selector, config) {
         </form>
     </div>
 </div>
-<div class="row mt-3">
-<div class="col-xs-12 col-sm-12">
-    <div class="" data-xapp="ht-table">
-    </div>
-</div>
+<div class="table-responsive scroll-container mt-3" data-xapp="ht-table">
 </div>
 <div class="row justify-content-end">
-    <div class="col-xs-12 col-sm-8 col-md-6 text-right">
-
+    <div class="col-xs-12 col-sm-8 col-md-6 mt-3" data-xapp="ht-paging">
     </div>
 </div>
 `,
@@ -74,7 +105,48 @@ xApp.handsontable = function(selector, config) {
         $element.querySelector('[data-xapp="ht-table"]').appendChild($htContainer)
 
         const $searchForm = $element.querySelector('[data-xapp="ht-search"]'),
+        $pagingContainer = $element.querySelector('[data-xapp="ht-paging"]'),
         $searchInput = $searchForm.querySelector('input'),
+        createPaging = function(current, lastPage) {
+/*
+            `<ul class="pagination">
+            <li class="page-item">
+                <a class="page-link" href="#" aria-label="Previous">
+                    <span aria-hidden="true">«</span>
+                    <span class="sr-only">Previous</span>
+                </a>
+            </li>
+            <li class="page-item"><a class="page-link" href="#">1</a></li>
+            <li class="page-item active"><a class="page-link" href="#">2</a></li>
+            <li class="page-item"><a class="page-link" href="#">3</a></li>
+            <li class="page-item">
+                <a class="page-link" href="#" aria-label="Next">
+                    <span aria-hidden="true">»</span>
+                    <span class="sr-only">Next</span>
+                </a>
+            </li>
+        </ul>`
+*/
+            if ($pagingContainer.firstElementChild!=null) {
+                $pagingContainer.firstElementChild.remove()
+            }
+            $pagingContainer.innerHTML = '<ul class="pagination float-right"></ul>'
+            for (let z=1;z<=lastPage;z++) {
+                let $ln = document.createElement('div')
+                if (current==z) {
+                    $ln.innerHTML = '<li class="page-item active"><a class="page-link" href="javascript:;">'+z+'</a></li>'
+                    $ln = $ln.firstElementChild
+                } else {
+                    $ln.innerHTML = '<li class="page-item"><a class="page-link" href="javascript:;">'+z+'</a></li>'
+                    $ln = $ln.firstElementChild
+                    $ln.firstElementChild.addEventListener('click', e=>{
+                        e.preventDefault()
+                        doRequest({page: z, sorters: []})
+                    })
+                }
+                $pagingContainer.firstElementChild.appendChild($ln)
+            }
+        },
         doRequest = function(params) {
             const q = {
                     length: settings.pageSize,
@@ -104,6 +176,7 @@ xApp.handsontable = function(selector, config) {
             xApp.apiGet(settings.loadEndPoint + (p != '' ? '?' + decodeURI(p) : ''))
             .then(json => {
                 hot.loadData(json.data)
+                createPaging(params.page, Math.ceil(json.recordsFiltered / settings.pageSize))
 
 /*
 
@@ -131,6 +204,8 @@ xApp.handsontable = function(selector, config) {
         })
 
         doRequest({page: 1, sorters: []})
+        xApp.onUnload(() => {
+            hot.destroy()
+        })
         return hot
-
 }
