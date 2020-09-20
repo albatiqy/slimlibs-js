@@ -67,7 +67,7 @@ xApp.timeRangeFormat = function($date1, $date2, $input_format = null) {
             $rentang_tanggal = $hari[$src_mulai.format("e")]+' '+$arr_mulai[0]+' '+$bulan[$arr_mulai[1]]+' '+$arr_mulai[2]+', pukul '+$src_mulai.format("HH:mm")+' s.d. '+$src_selesai.format("HH:mm")+' WIB';
         }
     } else {
-        $rentang_tanggal = $hari[$src_mulai.format("e")]+' '+$arr_mulai[0]+' '+$bulan[$arr_mulai[1]]+' '+$arr_mulai[2]+' pukul '.$src_mulai.format("HH:mm")+' WIB s.d. '+$hari[$src_selesai.format("e")]+' '+$arr_selesai[0]+' '+$bulan[$arr_selesai[1]]+' '+$arr_selesai[2]+' pukul '+$src_selesai.format("HH:mm")+' WIB';
+        $rentang_tanggal = $hari[$src_mulai.format("e")]+' '+$arr_mulai[0]+' '+$bulan[$arr_mulai[1]]+' '+$arr_mulai[2]+' pukul '+$src_mulai.format("HH:mm")+' WIB s.d. '+$hari[$src_selesai.format("e")]+' '+$arr_selesai[0]+' '+$bulan[$arr_selesai[1]]+' '+$arr_selesai[2]+' pukul '+$src_selesai.format("HH:mm")+' WIB';
     }
     return $rentang_tanggal;
 }
