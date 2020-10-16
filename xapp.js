@@ -4,19 +4,43 @@ const xApp = Object.assign(SlimlibsGlobals, {
     pageSelector: '#container',
     cookiePath: (SlimlibsGlobals.basePath==''?'/':SlimlibsGlobals.basePath),
     Libs: {},
-    Fn: {}
+    Fn: {},
+    ENUMS: {
+        notify: {
+            info: 0,
+            success: 1,
+            warning: 2,
+            danger: 3
+        }
+    }
 })
 
 xApp.handleHttpJSONResponse = SlimlibsHandleHttpJSONResponse
 
 xApp.notifyError = function(error) {
-    const event = new CustomEvent('notification.error', {
+    xApp.notify(error.message, xApp.ENUMS.notify.error)
+}
+
+xApp.notify = function(text, tp) {
+    const event = new CustomEvent('xapp-app.notify', {
         bubbles: true,
-        detail: error
+        detail: {text: text, type: tp}
     }), $app = document.querySelector(xApp.appSelector)
     if ($app!=null) {
         $app.dispatchEvent(event)
     }
+}
+xApp.notifyInfo = function(text) {
+    xApp.notify(text, xApp.ENUMS.notify.info)
+}
+xApp.notifySuccess = function(text) {
+    xApp.notify(text, xApp.ENUMS.notify.success)
+}
+xApp.notifyWarning = function(text) {
+    xApp.notify(text, xApp.ENUMS.notify.warning)
+}
+xApp.notifyDanger = function(text) {
+    xApp.notify(text, xApp.ENUMS.notify.danger)
 }
 
 xApp.cookieEnabled = function() {
