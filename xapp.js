@@ -52,12 +52,12 @@ xApp.cookieEnabled = function() {
 }
 
 xApp.getCookie = function(name) {
-    var v = document.cookie.match('(^|;) ?' + name + '=([^;]*)(;|$)');
+    const v = document.cookie.match('(^|;) ?' + name + '=([^;]*)(;|$)');
     return v ? decodeURIComponent(v[2]) : null;
 }
 
 xApp.setCookie = function(name, value, seconds) {
-    var d = new Date;
+    const d = new Date;
     d.setTime(1000*seconds);
     document.cookie = name + "=" + encodeURIComponent(value) + ";path="+xApp.cookiePath+";expires=" + d.toGMTString();
 }

@@ -13,5 +13,9 @@ xApp.codemirror = function(selector, config) {
             $element.parentNode.replaceChild(elt, $element)
           }, libsettings)
 
+        xApp.onUnload(() => {
+            //cm.toTextArea()
+        })
+
     return cm
 }
