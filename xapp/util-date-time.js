@@ -71,3 +71,12 @@ xApp.timeRangeFormat = function($date1, $date2, $input_format = null) {
     }
     return $rentang_tanggal;
 }
+
+xApp.dateTimeFormat = function($date, $input_format = null) {
+    if ($input_format == null) {
+        $input_format = INPUT_FORMAT;
+    }
+    const $src = moment($date, INPUT_FORMAT),
+    $arr = [$src.format("D"), $src.format("M"), $src.format("YYYY")]
+    return $hari[$src.format("e")]+', '+$arr[0]+' '+$bulan[$arr[1]]+' '+$arr[2]+' pukul '+$src.format("HH:mm")+' WIB';
+}

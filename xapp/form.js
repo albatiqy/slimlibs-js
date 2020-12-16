@@ -30,8 +30,17 @@ xApp.serializeForm = function($form) { // can use FormData entries
 }
 
 xApp.form = function(settings) {
+    let $btnSubmitTrigger = null
     const submitx = function() {
         let data = null, cb = null, endpoint=settings.endPoint
+
+        if ($btnSubmitTrigger!=null) {
+            $btnSubmitTrigger.disabled = true
+        }
+        if (settings.$submitButton!=null) {
+            settings.$submitButton.disabled = true
+        }
+
         if (settings.useFormData) {
             data = new FormData(settings.$form)
         } else {
@@ -56,9 +65,19 @@ xApp.form = function(settings) {
             settings.afterSubmit(false)
             settings.submitError(error)
         })
+        .finally(()=>{
+            if ($btnSubmitTrigger!=null) {
+                $btnSubmitTrigger.disabled = false
+                $btnSubmitTrigger = null
+            }
+            if (settings.$submitButton!=null) {
+                settings.$submitButton.disabled = false
+            }
+        })
 
     }
     settings.$form.addEventListener("submit", e => {
+        $btnSubmitTrigger = e.submitter
         e.preventDefault()
         submitx()
     })
