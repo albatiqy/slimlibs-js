@@ -47,11 +47,38 @@ xApp.form = function(settings) {
             data = xApp.serializeForm(settings.$form)
         }
         settings.beforeSubmit()
-        if (settings.edit != null) {
+        /*
+        if (settings.putEndPoint != null) {
             cb = xApp.apiPut
-            endpoint +=  '/' + settings.edit
+            endpoint = settings.putEndPoint
         } else {
-            cb = xApp.apiPost
+            if (settings.edit != null) {
+                cb = xApp.apiPut
+                endpoint +=  '/' + settings.edit
+            } else {
+                cb = xApp.apiPost
+            }
+        }
+        */
+        if ('putEndPoint' in settings) {
+            if (settings.putEndPoint != null) {
+                cb = xApp.apiPut
+                endpoint = settings.putEndPoint
+            } else {
+                if (settings.edit != null) {
+                    cb = xApp.apiPut
+                    endpoint +=  '/' + settings.edit
+                } else {
+                    cb = xApp.apiPost
+                }
+            }
+        } else {
+            if (settings.edit != null) {
+                cb = xApp.apiPut
+                endpoint +=  '/' + settings.edit
+            } else {
+                cb = xApp.apiPost
+            }
         }
         if (typeof settings.alterSubmitData=='function') {
             data = settings.alterSubmitData(data)
